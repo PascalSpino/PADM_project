@@ -1,2 +1,2 @@
-# PADS_project
+# PADM_project
 Repository for Final Project in Principles of Autonomy and Decision Making
