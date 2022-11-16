@@ -1,0 +1,7 @@
+drive_to_counter 
+pick_up sugar
+place_on_counter sugar
+open_drawer 
+pick_up spam
+place_in_drawer spam
+close_drawer 
