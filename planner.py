@@ -30,6 +30,7 @@ class Planner:
     def __init__(self, domain, problem):
         self.domain = domain
         self.problem = problem
+        self.plan = None
     
     def solve(self):
         '''Finds path from init to goal if one exists.'''
@@ -95,7 +96,8 @@ class Planner:
                             while new_node.parent != None:
                                 plan.insert(0, new_node.action)
                                 new_node = new_node.parent
-    
+                            # Assign plan to plan instance variable 
+                            self.plan = [action.name + " " + " ".join(action.parameters) for action in plan] 
                             return plan
                         # Add new nodes to visited list and queue
                         visited.add(new_node)
@@ -117,7 +119,7 @@ if __name__ == "__main__":
     
     # Solve plan
     plan = planner.solve()
-    
+
     # Format actions in plan as list
     plan_actions = [action.name + " " + " ".join(action.parameters) for action in plan]
     
@@ -126,9 +128,3 @@ if __name__ == "__main__":
     for i in range(len(plan_actions)):
         print(f"Step {i+1}:", plan_actions[i])
     print("\nSteps written to file \'plan.txt\'")
-
-    # Write plan_actions to file 'plan.txt'
-    with open("plan.txt", "w") as f:
-        for action in plan_actions:
-            f.write(action + "\n")
-
