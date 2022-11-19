@@ -20,3 +20,18 @@ We followed the documentation available on Planning.wiki (https://planning.wiki/
 **3. You can also mention any challenges you faced and things that you tried irrespective of whether they worked or not**
 
 There are several versions of PDDL and the syntax varies slightly between them. We focused primarily on PDDL 2.1 but suspected that we would later have to make significant modifications in order to be parsed successfully. At first, we tried to craft our predicates with objects for the drawer, countertop, gripper, spam can, sugar box, etc… But we instead reduced our set of objects to just the spam can and sugar box, and crafted predicates to describe the drawer state and object locations without additional objects. 
+
+DELIVERABLE 2:
+
+**1. Qualitatively mention your assumptions that you made about the about the environment, state space, and start and goal positions**
+
+
+**2. Explain the files and the motion planners you implemented**
+
+
+**3. Explain how you integrated the activity plan with the motion plan**
+
+**4. GIF/video of the robot executing the plan**
+
+**5. You can also mention any challenges you faced and things that you tried irrespective of whether that worked or not.**
+
