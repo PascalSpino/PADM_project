@@ -24,14 +24,18 @@ There are several versions of PDDL and the syntax varies slightly between them. 
 DELIVERABLE 2:
 
 **1. Qualitatively mention your assumptions that you made about the about the environment, state space, and start and goal positions**
-
+- The environment is static except for the movement of the arm itself
+- The state space obstacles are the kitchen objects
 
 **2. Explain the files and the motion planners you implemented**
-
+- Still in progress
+- Robot is given a goal grasp pose, and performs RRT by sampling poses with bias towards the goal pose. Each generated pose is checked for collision and discarded if so
 
 **3. Explain how you integrated the activity plan with the motion plan**
+- The activity planner outputs a file that the motion planner can read from, which each string "command" in the file corresponding to a function that makes the robot perform this action in simulation.
 
 **4. GIF/video of the robot executing the plan**
+- Executing part of the plan: https://youtu.be/AJd9sEfJcZI
 
 **5. You can also mention any challenges you faced and things that you tried irrespective of whether that worked or not.**
 
