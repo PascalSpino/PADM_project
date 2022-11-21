@@ -40,7 +40,7 @@ There are several versions of PDDL and the syntax varies slightly between them. 
 
 **3. Explain how you integrated the activity plan with the motion plan**
 - ~~The activity planner outputs a file that the motion planner can read from, which each string "command" in the file corresponding to a function that makes the robot perform this action in simulation.~~
-- We added an instance variable to the Planner class in `planner.py` so that the plan could be directly accessible without the need to read from a file. With this approach we chose to represent the plan as an ordered list where each element is a string containing the next step in the plan. After the `solve()` method is run, the instance variable `plan` of a `Planner` object will contain the BFS-generated plan: `['drive_to_counter ', 'pick_up sugar', 'place_on_counter sugar', 'open_drawer ', 'pick_up spam', 'place_in_drawer spam', 'close_drawer ']`
+- We added an instance variable to the Planner class in `planner.py` so that the plan could be directly accessible without the need to read from a file. With this approach we chose to represent the plan as an ordered list where each element is a string containing the next step in the plan. After the `solve()` method is run, the instance variable `plan` of a `Planner` object will contain the BFS-generated plan: `['drive_to_counter ', 'pick_up sugar', 'place_on_counter sugar', 'open_drawer', 'pick_up spam', 'place_in_drawer spam', 'close_drawer ']`
 
 **4. GIF/video of the robot executing the plan**
 - Executing part of the plan: https://youtu.be/AJd9sEfJcZI
