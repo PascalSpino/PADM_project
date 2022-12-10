@@ -127,4 +127,6 @@ if __name__ == "__main__":
     print("[+] Action sequence to complete both tasks:\n")
     for i in range(len(plan_actions)):
         print(f"Step {i+1}:", plan_actions[i])
-    print("\nSteps written to file \'plan.txt\'")
+
+    print("\n[+] As a list:")
+    print(planner.plan)
