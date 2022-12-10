@@ -11,13 +11,36 @@
 	(robot_far_from_counter)
 	(robot_close_to_counter)
     )
+    
+    (:action open_drawer
+        :precondition (and
+	    (gripper_empty)
+     	    (drawer_closed)
+     	    (robot_close_to_counter)
+	)
+        :effect (and 
+	    (drawer_open)
+	    (not (drawer_closed))
+	)
+    )
+
+    (:action close_drawer
+        :precondition (and
+	    (gripper_empty)
+     	    (drawer_open)
+     	    (robot_close_to_counter)
+	)
+        :effect (and
+            (drawer_closed)
+	    (not (drawer_open))
+	)
+    )
+    
     (:action pick_up
         :parameters (?x)
         :precondition (and
 	    (gripper_empty)
      	    (robot_close_to_counter)
-
-	    ;something more here??????????
 	)
         :effect (and
 	    (gripper_holding ?x)
@@ -54,30 +77,6 @@
         )
     )
 
-    (:action open_drawer
-        :precondition (and
-	    (gripper_empty)
-     	    (drawer_closed)
-     	    (robot_close_to_counter)
-	)
-        :effect (and 
-	    (drawer_open)
-	    (not (drawer_closed))
-	)
-    )
-
-    (:action close_drawer
-        :precondition (and
-	    (gripper_empty)
-     	    (drawer_open)
-     	    (robot_close_to_counter)
-	)
-        :effect (and
-            (drawer_closed)
-	    (not (drawer_open))
-	)
-    )
-
     (:action drive_to_counter
         :precondition
      	    (robot_far_from_counter)
@@ -87,4 +86,3 @@
 	)
     )
 )
-
