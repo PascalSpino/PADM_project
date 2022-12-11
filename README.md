@@ -41,7 +41,7 @@ python -B -m planner domain.pddl problem.pddl
 
 We used a BFS approach. The order of the steps to complete are dependent on the order in which actions are added to the queue. Rearranging the action order in `domain.pddl` can yield the alternate sequence of actions to complete both tasks. For our motion planning, we used the ordering in which the spam can task is completed first before moving the sugar box.
 
-<details><summary>Planner output</summary>
+<details open><summary>Planner output</summary>
 
 ```Shell
 [+] Found plan after 66 node expansions.
@@ -86,6 +86,36 @@ Step 7: place_on_counter sugar
 
 https://user-images.githubusercontent.com/20631034/206930185-f3fe8806-f77d-4ec2-a5bc-2502047069af.mp4
 
+
+<details open><summary>Terminal output</summary>
+
+```Shell
+python full_task_demo_polished.py 
+pybullet build time: May 20 2022 19:44:17
+Random seed: 2147483648
+Numpy seed: 2147483648
+Loading /home/ubuntu/Documents/PADM_project/padm-project-2022f/src/../models/ycb/004_sugar_box/textured.obj
+Loading /home/ubuntu/Documents/PADM_project/padm-project-2022f/src/../models/ycb/010_potted_meat_can/textured.obj
+[+] Generated activity plan:
+['drive_to_counter', 'open_drawer', 'pick_up spam', 'place_in_drawer spam', 'close_drawer', 'pick_up sugar', 'place_on_counter sugar']
+[*] Thinking...
+[+] Path found!
+[*] Thinking...
+[+] Path found!
+[*] Thinking...
+[+] Path found!
+[*] Thinking...
+[+] Path found!
+[*] Thinking...
+[+] Path found!
+[*] Thinking...
+[*] Thinking...
+[+] Path found!
+[*] Thinking...
+[+] Path found!
+...
+```
+</details>
 
 **5. You can also mention any challenges you faced and things that you tried irrespective of whether that worked or not.**
 - For the activity planning portion, we initially attempted to minimize the number of predicates and actions. We figured keeping things simple was the best approach. This led us to use negations of predicates heavily in both our `domain.pddl` and `problem.pddl` files. This would have worked and been fine theoretically, but it sometimes made it more diffucult to debug the logic before we got our activity planner. Ultimately we made a handful of changes, including only having positive initial predicates, only having positive goals, and including a couple pairs of predicates that that represented opposed states for specific items (i.e. `drawer_open` and `drawer_closed`, as well as `robot_close_to_counter` and `robot_far_from_counter`). Using a couple paired predicates made our `.pddl` files slightly less consise, but a bit easier to debug.
