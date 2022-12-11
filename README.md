@@ -1,8 +1,15 @@
 # PADM Final Project
 
-Documentation of all products developed for the Final Project of Principles of Autonomy and Decision Making (6.4132/16.412).
+## Introduction 
 
-## DELIVERABLE 1: 
+This project incorporates three major topics covered in class: activity planning, motion planning, and trajectory optimization. The high-level task was to simulate a pick-and-place robot problem. We were given a Franka robot mounted to a carter spawned into a kitchen environment. The kitchen contained a stove with a sugar box placed on a burner, a spam can placed on a counter, as well as several drawers and cabinets. We had two objectives, to be completed in either order
+
+* Navigate to the sugar box. Pick it up off the stove and place in anywhere on a countertop.
+* Navigate to the spam can. Stow the spam can in the indigo drawer.
+
+Below is documentation of our approach. This repo contains all products produced for the Final Project of Principles of Autonomy and Decision Making (6.4132/16.412, Fall '22).
+
+## Activity Planning 
 
 **1. Qualitatively mention your assumptions that you made while designing the domain**
 - The ‘spam can’ and ‘sugar box’ objects can only exist in one of four locations: the burner, the countertop, the drawer, or within the gripper.
@@ -22,7 +29,7 @@ We followed the documentation available on Planning.wiki (https://planning.wiki/
 
 There are several versions of PDDL and the syntax varies slightly between them. We focused primarily on PDDL 2.1 but suspected that we would later have to make significant modifications in order for our .pddl files to be parsed successfully. At first, we tried to craft our predicates with objects for the drawer, countertop, gripper, spam can, sugar box, etc. Ultimately, we instead reduced our set of objects to just the spam can and sugar box, and crafted predicates to describe the drawer state and object locations without additional objects. 
 
-## DELIVERABLE 2: 
+## Motion Planning
 
 **1. Qualitatively mention your assumptions that you made about the about the environment, state space, and start and goal positions**
 - The environment is static except for the movement of the arm itself
@@ -47,3 +54,19 @@ There are several versions of PDDL and the syntax varies slightly between them. 
 
 **5. You can also mention any challenges you faced and things that you tried irrespective of whether that worked or not.**
 - For the activity planning portion, we initially attempted to minimize the number of predicates and actions. We figured keeping things simple was the best approach. This led us to use negations of predicates heavily in both our `domain.pddl` and `problem.pddl` files. This would have worked and been fine theoretically, but it sometimes made it more diffucult to debug the logic before we got our activity planner. Ultimately we made a handful of changes, including only having positive initial predicates, only having positive goals, and including a couple pairs of predicates that that represented opposed states for specific items (i.e. `drawer_open` and `drawer_closed`, as well as `robot_close_to_counter` and `robot_far_from_counter`). Using a couple paired predicates made our `.pddl` files slightly less consise, but a bit easier to debug.
+
+## Trajectory Optimization
+
+1. Explain the files, key functions, and the solver you used.
+2. Explain what optimization problem you are trying to solve and why
+3. Formalize the constrained optimization problem using mathematical symbols and relationships 
+4. Mention any challenges you faced and things that you tried irrespective of whether that worked or not. This will be very important if the problem you defined doesn’t end up working. 
+5. GIF/video of the robot executing the plan and embedded in the README
+6. Compare the resulting optimized trajectory to the initial sample-based motion plan
+
+
+## Conclusion
+
+### Reflections
+
+### Contributions
