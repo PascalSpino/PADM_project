@@ -36,8 +36,7 @@ There are several versions of PDDL and the syntax varies slightly between them. 
 Our activity planner can be run from the command-line in the same manner as in the [pddl-parser](https://github.com/pucrs-automated-planning/pddl-parser) documentation:
 
 ```Shell
-cd pddl-parse]
-python -B -m pddl_parser.planner ../domain.pddl ../problem.pddl
+python -B -m planner domain.pddl problem.pddl
 ```
 
 We used a BFS approach. The order of the steps to complete are dependent on the order in which actions are added to the queue. Rearranging the action order in `domain.pddl` can yield the alternate sequence of actions to complete both tasks. For our motion planning, we used the ordering in which the spam can task is completed first before moving the sugar box.
