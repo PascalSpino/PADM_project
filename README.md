@@ -33,7 +33,7 @@ There are several versions of PDDL and the syntax varies slightly between them. 
 
 ### Results
 
-Our activity planner can be run from the command-line in the same manner as in the [pddl-parser](https://github.com/pucrs-automated-planning/pddl-parser) documentation:
+Our activity planner can be run from the command-line in the same manner as in the [pddl-parser](https://github.com/pucrs-automated-planning/pddl-parser) documentation, albeit slightly simplified:
 
 ```Shell
 python -B -m planner domain.pddl problem.pddl
