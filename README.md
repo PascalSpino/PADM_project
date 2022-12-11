@@ -11,6 +11,8 @@ Below is documentation of our approach. This repo contains all products produced
 
 ## Activity Planning 
 
+### Implementation
+
 **1. Qualitatively mention your assumptions that you made while designing the domain**
 - The ‘spam can’ and ‘sugar box’ objects can only exist in one of four locations: the burner, the countertop, the drawer, or within the gripper.
 - The gripper can only hold one object at a time.
@@ -28,6 +30,36 @@ We followed the documentation available on Planning.wiki (https://planning.wiki/
 **3. You can also mention any challenges you faced and things that you tried irrespective of whether they worked or not**
 
 There are several versions of PDDL and the syntax varies slightly between them. We focused primarily on PDDL 2.1 but suspected that we would later have to make significant modifications in order for our .pddl files to be parsed successfully. At first, we tried to craft our predicates with objects for the drawer, countertop, gripper, spam can, sugar box, etc. Ultimately, we instead reduced our set of objects to just the spam can and sugar box, and crafted predicates to describe the drawer state and object locations without additional objects. 
+
+### Results
+
+Our activity planner can be run from the command-line in the same manner as in the [pddl-parser](https://github.com/pucrs-automated-planning/pddl-parser) documentation:
+
+```Shell
+cd pddl-parse]
+python -B -m pddl_parser.planner ../domain.pddl ../problem.pddl
+```
+
+We used a BFS approach. The order of the steps to complete are dependent on the order in which actions are added to the queue. Rearranging the action order in `domain.pddl` can yield the alternate sequence of actions to complete both tasks. For our motion planning, we used the ordering in which the spam can task is completed first before moving the sugar box.
+
+<details><summary>Planner output</summary>
+
+```Shell
+[+] Found plan after 66 node expansions.
+[+] Action sequence to complete both tasks:
+
+Step 1: drive_to_counter 
+Step 2: open_drawer 
+Step 3: pick_up spam
+Step 4: place_in_drawer spam
+Step 5: close_drawer 
+Step 6: pick_up sugar
+Step 7: place_on_counter sugar
+
+[+] As a list:
+['drive_to_counter ', 'open_drawer ', 'pick_up spam', 'place_in_drawer spam', 'close_drawer ', 'pick_up sugar', 'place_on_counter sugar']
+```
+</details>
 
 ## Motion Planning
 
