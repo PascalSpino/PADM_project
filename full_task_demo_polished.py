@@ -5,6 +5,8 @@ import sys
 import argparse
 import numpy as np
 import math
+import subprocess
+import ast
 from random import random
 from collections import namedtuple
 from itertools import product, combinations
@@ -174,6 +176,7 @@ def get_collision_holding_fn(body, joints, obstacles, tool_link, held_object, X_
     return fn
 
 ###############################################################################
+
 # Autonomy Functions
 def execute_rrt(world, goal, max, prob):
     joints = get_movable_joints(world.robot)
@@ -195,12 +198,12 @@ def execute_rrt(world, goal, max, prob):
     set_renderer(enable=False) # do not visualize the RRT collision checking
     confs = None
     while confs == None:
-        print("Thinking...")
+        print("[*] Thinking...")
         confs = rrt(start, goal, distance_fn, difference_fn, sample_fn, extend_fn, collision_fn, goal_probability=prob, max_iterations = max)
     if confs is not None:
-        print("Path found!")
+        print("[+] Path found!")
     else:
-        print("RRT failed!")
+        print("[-] RRT failed!")
     # reset initial configuration
     set_joint_positions(world.robot, world.arm_joints, start)
     set_renderer(enable=True)
@@ -236,12 +239,12 @@ def execute_rrt_holding(world, goal, held_object, max, prob):
     set_renderer(enable=False) # do not visualize the RRT collision checking
     confs = None
     while confs == None:
-        print("Thinking...")
+        print("[*] Thinking...")
         confs = rrt(start, goal, distance_fn, difference_fn, sample_fn, extend_fn, collision_fn, goal_probability=prob, max_iterations = max)
     if confs is not None:
-        print("Path found!")
+        print("[+] Path found!")
     else:
-        print("RRT failed!")
+        print("[-] RRT failed!")
     # reset initial configuration
     set_joint_positions(world.robot, world.arm_joints, start)
     set_pose(held_object, initial_object_pose)
@@ -267,7 +270,7 @@ def goto(ik_joints, world, tool_link, end_pose):
     for pose in interpolate_poses(start_pose, end_pose, pos_step_size=0.01):
             conf = next(closest_inverse_kinematics(world.robot, PANDA_INFO, tool_link, pose, max_time=0.05), None)
             if conf is None:
-                print('Failure!')
+                print('[-] Failure!')
                 wait_for_user()
                 break
             set_joint_positions(world.robot, ik_joints, conf)
@@ -292,7 +295,7 @@ def goto_open_drawer(ik_joints, world, tool_link, dis):
     for pose in all_poses:
         conf = next(closest_inverse_kinematics(world.robot, PANDA_INFO, tool_link, pose, max_time=0.05), None)
         if conf is None:
-            print('Failure!')
+            print('[-] Failure!')
             #wait_for_user()
             #break
             continue
@@ -325,7 +328,7 @@ def goto_close_drawer(ik_joints, world, tool_link, dis):
         set_pose(5, [[s_pos[0]+i*shift_amount, s_pos[1], s_pos[2]], s_rot])
         
         if conf is None:
-            print('Failure!')
+            print('[-] Failure!')
             #wait_for_user()
             #break
             continue
@@ -490,40 +493,45 @@ def main():
     joints = get_movable_joints(world.robot)
     first_joint= world.arm_joints[0]
 
+    ############################
+    # Execute activity planner #
+    ############################
 
-    wait_for_user()
+    # Run activity planner on command line and collect result from stdout
+    cmd = ['python', '-B', '-m', 'planner', 'domain.pddl', 'problem.pddl']
+    result = subprocess.run(cmd, stdout=subprocess.PIPE).stdout.decode('utf-8')
+    # Extract path from result
+    plan = result.split("list:")[1].strip()
+    # Convert path to list
+    plan = ast.literal_eval(plan)
 
-    drive_to_counter(world)
+    print('[+] Generated activity plan:')
+    print(plan)
+    
+    # Iterate through actions in the activity plan
+    for action in plan:
+        # Call function associated with each action
+        if action == 'drive_to_counter':
+            drive_to_counter(world)
+        elif action == 'open_drawer':
+            open_drawer(world)
+        elif action == 'close_drawer':
+            close_drawer(world)
+        elif action == 'pick_up spam':
+            pick_up_spam(world)
+        elif action == 'place_in_drawer spam':
+            place_spam(world)
+        elif action == 'pick_up sugar':
+            pick_up_sugar(world)
+        elif action == 'place_on_counter sugar':
+            place_sugar(world)
 
-    wait_for_user()
-
-    open_drawer(world)
-
-    wait_for_user()
- 
-    pick_up_spam(world)
-
-    wait_for_user()
-
-    place_spam(world)
-
-    wait_for_user()
-
-    close_drawer(world)
-
-    wait_for_user()
-
-    pick_up_sugar(world)
-
-    wait_for_user()
-
-    place_sugar(world)
-
-    wait_for_user()
-
+    # Retreat robot from counter
     completed(world)
 
+    # Pause before calling world.destroy()
     wait_for_user()
+
     world.destroy()
 
 if __name__ == '__main__':
