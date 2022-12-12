@@ -83,9 +83,8 @@ Step 7: place_on_counter sugar
 - We added an instance variable to the Planner class in `planner.py` so that the plan could be directly accessible without the need to read from a file. With this approach we chose to represent the plan as an ordered list where each element is a string containing the next step in the plan. After the `solve()` method is run, the instance variable `plan` of a `Planner` object will contain the BFS-generated plan: `['drive_to_counter ', 'open_drawer ', 'pick_up spam', 'place_in_drawer spam', 'close_drawer ', 'pick_up sugar', 'place_on_counter sugar']`
 
 **4. GIF/video of the robot executing the plan**
-- ~~Executing part of the plan: https://youtu.be/AJd9sEfJcZI~~
 
-
+https://youtu.be/Egf629Q4Xzc
 https://user-images.githubusercontent.com/20631034/206930185-f3fe8806-f77d-4ec2-a5bc-2502047069af.mp4
 
 
