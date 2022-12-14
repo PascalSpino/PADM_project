@@ -84,8 +84,11 @@ Step 7: place_on_counter sugar
 
 **4. GIF/video of the robot executing the plan**
 
-https://youtu.be/Egf629Q4Xzc
-https://user-images.githubusercontent.com/20631034/206930185-f3fe8806-f77d-4ec2-a5bc-2502047069af.mp4
+[![](http://img.youtube.com/vi/Egf629Q4Xzc/0.jpg)](http://www.youtube.com/watch?v=Egf629Q4Xzc "Video Title")
+
+[Click on video or link to watch demonstration](https://youtu.be/Egf629Q4Xzc)
+
+~~https://user-images.githubusercontent.com/20631034/206930185-f3fe8806-f77d-4ec2-a5bc-2502047069af.mp4~~
 
 
 <details open><summary>Terminal output</summary>
