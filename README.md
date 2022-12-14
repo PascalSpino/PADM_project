@@ -127,10 +127,22 @@ Loading /home/ubuntu/Documents/PADM_project/padm-project-2022f/src/../models/ycb
 ## Trajectory Optimization
 
 1. Explain the files, key functions, and the solver you used.
+
+We attempted to use the SNOPT solver via pydrake.
+
 2. Explain what optimization problem you are trying to solve and why
+
+The problem we are solving is moving the robot gripper from a start point to goal point. The optimization must account for the time required to move from the start point to the goal point, as well as the arbitrarily-defined step size we used in the initial motion planning. In light of our solution to motion planning, we want to optimize over the joint angles of the robot arm.
+
 3. Formalize the constrained optimization problem using mathematical symbols and relationships 
+
+The optimization problem we are trying to solve is essentially the same one represented here: https://manipulation.csail.mit.edu/trajectories.html#section2
+
+
 4. Mention any challenges you faced and things that you tried irrespective of whether that worked or not. This will be very important if the problem you defined doesn’t end up working. 
+
 5. GIF/video of the robot executing the plan and embedded in the README
+
 6. Compare the resulting optimized trajectory to the initial sample-based motion plan
 
 
