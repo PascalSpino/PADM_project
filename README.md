@@ -68,18 +68,19 @@ Step 7: place_on_counter sugar
 ## Motion Planning
 
 **1. Qualitatively mention your assumptions that you made about the about the environment, state space, and start and goal positions**
-- The environment is static except for the movement of the arm itself
-- The state space obstacles are the kitchen objects
-- All objects within the environment will always have the same starting position (i.e. the sugar box and spam can will always be found at the same 3-dimensional point)
-- We are free to hard code waypoints within the environment for the purpose of charting the robot's motion and the arm/gripper's motion
+- The environment is static except for the movement of the arm itself and all objects within the environemt are initialized deterministically with consistent poses.
+- The movement of the wheeled robot base is not necessary to performing manipulation tasks of the `drawer`, `spam` and `sugar` objects. The wheeled robot base also ideally operates in obstacle-free space, and so it does not make sense to encorperate RRT in this movement. In order to perform the 'drive_to_counter' action, the robot base executes a predefined series of motions to bring the robot arm within suitable range of the objects it must manipulate.  
+- Goal states for the `spam` and `sugar` locations are somewhat arbitrary as long as they fulfill the following requirements: the `spam` object should be within the bounds of the `drawer` and not in collision with the kitchen, the `sugar` object should be on the counter relatively close to the original `spam` position, with no specific orientation.
+- The arm is capable of perfectly grasping each object and must only get relatively close to the object (within the span of the gripper fingers) to do so. While the arm is holding an object, the object remains perfectly rigid in the grasp of the gripper. 
 
 
 **2. Explain the files and the motion planners you implemented**
-- Motion planner still in progress
-- Robot is given a goal grasp pose, and performs RRT by sampling poses with bias towards the goal pose. Each generated pose is checked for collision and discarded if so
+- RRT was implemented in the configuration space of the 6-joint manipulator arm in order to plan each trajectory. The code for our implementation as well as definitions for each action can be found in `full_task_demo_polished.py`. The implementation of RRT is typical and builds upon the components `get_sample_fn`, `get_collision_fn`, `get_distance_fn` and `get_extend_fn` all designed to work in the configuration space of the arm. The RRT function itself, `def rrt(...)`, accepts as inputs each function collected from the previous definitions, as well as a `start` configuration, a `goal` configuration and assignments for `max_iterations` and `goal_probability`. The function first checks that `start` and `goal` do not produce collisions, and then proceeds to either randomly sample or sample from the goal based on `goal_probability`. For each sample, the nearest prior configuration on the RRT graph is calculated by joint euclidean distance and a new configuration is calculated by extending a limited distance towards the sample. With 0.05 radian resolution, each interpolated configuration towards this new configuration is tested for collision by calling pybullets `pairwise_collision` between the robot body and each other object in the world. If no collisions are found, this new configuration is added to the RRT graph and the process continues until either `max_iterations` is met or the goal configration is added to the RRT graph. 
+- For trajectory planning with RRT while the arm is holding an object, a new collision-checking method is defined by `get_collision_holding_fn` that takes as additional input the held object and rigid body transform between the gripper and object. In addition to checking pairwise collision between the robot arm and all other objects in the world, the function additionally computes a new pose for the held object by applying forward kinematics to the arm kinematics, and multiplying this transform by the gripper-object transform. The new pose is also checked for collision to assure that RRT does not return a path where the held object collides with other objects. 
+- For each task definition, goal configurations are calculated offline through a seperate pipeline we implemented to find feasible grasp positions. This pipeline allowed us to move the arm to positions that looked visually correct, and then extract a configuration for the planner.
+- For the `open_drawer` and `close_drawer` tasks, due to the mechanical constraints of the expected drawer motion, we did not rely fully on RRT (which would have produced non-straight trajectories that would be physically inconsistent with the drawer motion). Instead, RRT is used to find a valid trajectory to the drawer grasp location, and then inverse kinematics is used to drive the manipulator along a straight path in the same direction that the drawer moves, at the same rate at which the drawer is moved. 
 
 **3. Explain how you integrated the activity plan with the motion plan**
-- ~~The activity planner outputs a file that the motion planner can read from, which each string "command" in the file corresponding to a function that makes the robot perform this action in simulation.~~
 - We added an instance variable to the Planner class in `planner.py` so that the plan could be directly accessible without the need to read from a file. With this approach we chose to represent the plan as an ordered list where each element is a string containing the next step in the plan. After the `solve()` method is run, the instance variable `plan` of a `Planner` object will contain the BFS-generated plan: `['drive_to_counter ', 'open_drawer ', 'pick_up spam', 'place_in_drawer spam', 'close_drawer ', 'pick_up sugar', 'place_on_counter sugar']`
 
 **4. GIF/video of the robot executing the plan**
@@ -89,7 +90,6 @@ Step 7: place_on_counter sugar
 [Click on video or link to watch demonstration](https://youtu.be/Egf629Q4Xzc)
 
 ~~https://user-images.githubusercontent.com/20631034/206930185-f3fe8806-f77d-4ec2-a5bc-2502047069af.mp4~~
-
 
 <details open><summary>Terminal output</summary>
 
