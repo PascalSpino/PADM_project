@@ -133,13 +133,15 @@ Loading /home/ubuntu/Documents/PADM_project/padm-project-2022f/src/../models/ycb
 We attempted to use the SNOPT solver via pydrake.
 
 2. Explain what optimization problem you are trying to solve and why
-
-The problem we are solving is moving the robot gripper from a start point to goal point. The optimization must account for the time required to move from the start point to the goal point, as well as the arbitrarily-defined step size we used in the initial motion planning. In light of our solution to motion planning, we want to optimize over the joint angles of the robot arm.
+The optimization problem we are trying to solve is to define a trajectory between two robot arm configurations that minimizes some metric of distance covered, or alternatively some metric of total trajectory time. Essentially, we would like to use optimization to move the arm from one configuration to another while avoiding all uneccessary motion found in the unoptimized trajectory. In doing so, it is important to consider optimization constraints to represent collision with obstacles, maximum joint speed, etc... otherwise the optimized trajectory may not even be be a valid solution. The reason that optimization is useful in this problem is because of the use of the stochastic motion planner RRT. RRT (if successful) generates a trajectory that takes the arm between an initial and goal configuration while avoiding obstacles along the way, but RRT trajectories have no guarantee of optimality. As seen in the task demonstration video, the RRT trajectory solutions produce uneccessary movements of the manipulator along the trajectory that increase the distance travelled by the arm as well as the execution time of the trajectory for no benefit. By successfuly optimizing the RRT trajectory, this motion should be much smoother and more direct. The combination of RRT and optimization is useful because RRT guarantees a collision free trajectory (if a trajectory is found) and optimization guarantees a trajectory that satisfies constraints as well as being optimal (if a solution is found). However, optimization can be much more complex than RRT, so the chance of success can be greatly improved by inputing an initial valid trajectory 'guess' (such as one found much more easiliy by RRT). 
 
 3. Formalize the constrained optimization problem using mathematical symbols and relationships 
-
-The optimization problem we are trying to solve is essentially the same one represented here: https://manipulation.csail.mit.edu/trajectories.html#section2
-
+For this optimization problem, we would like to minimize the total trajectory time subject to the constrants:
+- the trajectory begins in the specified start configuration,
+- the trajectory ends in the specified goal configuration, 
+- the trajectory does not result in collision at any time, 
+- some specified maximum joint speed for each joint is not exceeded at any time (as there are maximum motor speeds on real robot hardware, and without this constraint the time-minimization will result in an infinitely fast trajectory). This is technically seven constraints due to the Franka robot having seven joints.
+We choose to minimize trajectory time rather than trajectory distance-covered as this first metric is easier to encode and produces the same goal behaviour: the manipulator arm moving to the desired position as directly as possible. 
 
 4. Mention any challenges you faced and things that you tried irrespective of whether that worked or not. This will be very important if the problem you defined doesn’t end up working. 
 
