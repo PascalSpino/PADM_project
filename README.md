@@ -124,7 +124,7 @@ Loading /home/ubuntu/Documents/PADM_project/padm-project-2022f/src/../models/ycb
 **5. You can also mention any challenges you faced and things that you tried irrespective of whether that worked or not.**
 
 
-## Trajectory Optimization
+## Trajectory Optimization (will be updated on 12/14!)
 
 1. Explain the files, key functions, and the solver you used.
 
