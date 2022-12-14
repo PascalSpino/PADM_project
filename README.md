@@ -142,10 +142,10 @@ For this optimization problem, we would like to minimize the total trajectory ti
 - the trajectory begins in the specified start configuration,
 - the trajectory ends in the specified goal configuration, 
 - the trajectory does not result in collision at any time, 
-- some specified maximum joint speed for each joint is not exceeded at any time (as there are maximum motor speeds on real robot hardware, and without this constraint the time-minimization will result in an infinitely fast trajectory). This is technically seven constraints due to the Franka robot having seven joints.
-We choose to minimize trajectory time rather than trajectory distance-covered as this first metric is easier to encode and produces the same goal behaviour: the manipulator arm moving to the desired position as directly as possible. Let $C(t)$ be a function to represent configuration-space trajectory that returns a configuration $C(t_{N}) \in \DoubeR^{7 \times 1}$ given a time $t_N$. Furthermore, let $C(t)$ take the form of a polynomal function with coefficients $\alpha = \alpha_{0}, \alpha_{1}, ... \alpha_{N}$. Let $D(C)$ denote the time duration of executing the trajectory $C$. Then, the optimization problem could be written as:
+- some specified maximum joint speed for each joint is not exceeded at any time (as there are maximum motor speeds on real robot hardware, and without this constraint the time-minimization will result in an infinitely fast trajectory).
+We choose to minimize trajectory time rather than trajectory distance-covered as this first metric is easier to encode and produces the same goal behaviour: the manipulator arm moving to the desired position as directly as possible. Let $q(t)$ be a function to represent configuration-space trajectory that returns a configuration $q(t_{N}) \in \mathbb{R}^{7 \times 1}$ given a time $t_N$. Furthermore, let $q(t)$ take the form of a polynomal function with coefficients $\alpha = \alpha_{0}, \alpha_{1}, ... \alpha_{N}$. Let $D$ denote the time duration of executing the trajectory $q$. Let $C_{s}$ be the start configuration, $C_{g}$ be the goal configuration, and $w_{max}$ be the maximum absolute rotation speeds of each of the seven robot joints. Then, the optimization problem could be written as:
 
-$\min_{\alpha} D(C) such that C(0) = Conf_{initial}, C(D) = Conf_{final}, |d/dt C(t)| \leq w_{max} \forall t$
+$\min_{\alpha, D} D$ such that $q(0) = C_{s}, q(D) = C_{g}, \forall t |\dfrac{d}{dt} q(t)| \leq w_{max}$
 
 4. Mention any challenges you faced and things that you tried irrespective of whether that worked or not. This will be very important if the problem you defined doesn’t end up working. 
 
