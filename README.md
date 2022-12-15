@@ -148,10 +148,11 @@ We choose to minimize trajectory time rather than trajectory distance-covered as
 $\min_{\alpha, D}$ $D$ such that $q(0) = C_{s}$, $q(D) = C_{g}$, $\forall t$ ${S(q(t))} \gt 0$, $\forall t$ $|\dot{q}(t)| \leq w_{max}$
 
 **4. Mention any challenges you faced and things that you tried irrespective of whether that worked or not. This will be very important if the problem you defined doesn’t end up working.**
+We faced many challenges in fully encorperating optimization with our solution. Primarily, it was unclear how to encode obstacle constraints in Drake optimizers that reflected the simulated pybullet world. Additionally, properly importing the URDF information on our manipulator arm into Drake 
 
 **5. GIF/video of the robot executing the plan and embedded in the README**
 The trajectory we chose to focus on was the `pick_up` `spam` trajectory. This trajectory was obstacle free, so the optimization did need to apply collision constraints. The first trajectory in the video is the output of RRT, and the second trajectory was the 'optimized' version. For the purposes of creating this video and due to difficulty integrating Drake's trajectory optimization with our solution, this demononstration shows an 'ideally optimized' trajectory that simply goes point-to-point. See `optimization_comparison.py` to recreate this visualization. 
-https://youtu.be/R-Y3VyakcYU
+- https://youtu.be/R-Y3VyakcYU
 
 **6. Compare the resulting optimized trajectory to the initial sample-based motion plan**
 
