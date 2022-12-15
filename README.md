@@ -128,7 +128,7 @@ Loading /home/ubuntu/Documents/PADM_project/padm-project-2022f/src/../models/ycb
 - We decided to not implement RRT with regards to the motion of the wheeled robot base due to conceptual challenges among other reasons. In order for the robot base motion to be physically consistent, the rotation and driving motions are dependant on one another (the robot must turn in a direction and then drive forwards, rather than translating freely). We were unsure how to best encode this task for our RRT solver while also ensuring that the resulting trajectory produced a compelling visual. Due to it being known that there were no obstacles between the initial and goal states of the robot base, we felt it was acceptable to avoid RRT and instead compute subsequent turning, driving, and turning trajectories to execute. 
 - At first, the position of held objects would be modified with motion of the manipulator arm but not the object orientation. We found there were edge case collisions when simplifying the motion in this manner, so the code was adapted to perform more realistic full rigid body transforms of the held object during arm motion. 
 
-## Trajectory Optimization (will be updated by end of 12/14!)
+## Trajectory Optimization
 
 **1. Explain the files, key functions, and the solver you used.**
 
