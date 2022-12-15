@@ -163,7 +163,17 @@ For this optimization problem, we would like to minimize the total trajectory ti
 
 We chose to minimize trajectory time rather than distance-covered as this first metric is easier to encode and produces the same goal behaviour: the manipulator arm moving to the desired position as directly as possible. Let $q(t)$ be a function to represent configuration-space trajectory that returns a configuration $q(t_{N}) \in \mathbb{R}^{7 \times 1}$ given a time $t_N$. Furthermore, let $q(t)$ take the form of a polynomal function with coefficients $\alpha = \alpha_{0}, \alpha_{1}, ... \alpha_{N}$. Let $D$ denote the time duration of executing the trajectory $q(t)$. Let $C_{s}$ be the start configuration, $C_{g}$ be the goal configuration, $S(q(N))$ be a the signed distance function that returns the distance between the robot in configuration $q(N)$ and the nearest obstacle, and $w_{max}$ be the maximum absolute rotation speeds of each of the seven robot joints. Then, the optimization problem could be written as:
 
-$\min_{\alpha, D}$ $D$ such that $q(0) = C_{s}$, $q(D) = C_{g}$, $\dot{q}(0) = 0$, $\dot{q}(D) = 0$, $\forall t$ ${S(q(t))} \gt 0$, $\forall t$ $|\dot{q}(t)| \leq w_{max}$
+$$
+\begin{aligned}
+\min_{\alpha, D} \text{ } \text{ } &D \\
+\text{subject to } \text{ } \text{ } &q(0) = C_{s}, \\
+&q(D) = C_{g}, \\
+&\dot{q}(0) = 0, \\
+&\dot{q}(D) = 0, \\
+&\forall t, \text{ } {S(q(t))} \gt 0, \\
+&\forall t, \text{ } |\dot{q}(t)| \leq w_{max}
+\end{aligned}
+$$
 
 **4. Mention any challenges you faced and things that you tried irrespective of whether that worked or not. This will be very important if the problem you defined doesn’t end up working.**
 
