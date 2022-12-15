@@ -130,7 +130,10 @@ Loading /home/ubuntu/Documents/PADM_project/padm-project-2022f/src/../models/ycb
 
 **1. Explain the files, key functions, and the solver you used.**
 
-We attempted to use the SNOPT solver via pydrake.
+We attempted to use the SNOPT solver via pydrake. Please see this deepnote notebook (there were difficulties installing pyDrake through the posted process for linux)
+- https://deepnote.com/workspace/pascal-spino-4e6e-b031e767-a64d-42da-8a5d-8566870317aa/project/08-Motion-Planning-Duplicate-cfbe2275-cb15-48a8-ad6d-4dd5a4e55049/%2Fkinematic_trajectory_optimization.ipynb
+
+The notebook shows trajectory optimization being successfully executed according to the approximate start and goal positions from pybullet, and applying our proposed minimization function and constraints. We set up a simulation environment, declare a mathematical program, declare constraints and an initial guess, and achieve and execute an optimized trajectory. The optimization is performed on an iiwa arm - not the Franka, but similar in that they both have seven joints. Please see the 'challenges' sections for details on why we settled for this approach. 
 
 **2. Explain what optimization problem you are trying to solve and why**
 
@@ -138,7 +141,7 @@ The optimization problem we are trying to solve is to define a trajectory betwee
 
 **3. Formalize the constrained optimization problem using mathematical symbols and relationships**
 
-For this optimization problem, we would like to minimize the total trajectory time subject to the constrants:
+For this optimization problem, we would like to minimize the total trajectory time, subject to the constrants:
 - the trajectory begins in the specified start configuration,
 - the trajectory ends in the specified goal configuration, 
 - the trajectory does not result in collision at any time, 
@@ -150,17 +153,20 @@ We chose to minimize trajectory time rather than distance-covered as this first 
 $\min_{\alpha, D}$ $D$ such that $q(0) = C_{s}$, $q(D) = C_{g}$, $\dot{q}(0) = 0$, $\dot{q}(D) = 0$, $\forall t$ ${S(q(t))} \gt 0$, $\forall t$ $|\dot{q}(t)| \leq w_{max}$
 
 **4. Mention any challenges you faced and things that you tried irrespective of whether that worked or not. This will be very important if the problem you defined doesn’t end up working.**
-We faced many challenges in fully encorperating optimization with our solution. Primarily, it was unclear how to encode obstacle constraints in Drake optimizers that reflected the simulated pybullet world. Additionally, properly importing the URDF information on our manipulator arm into Drake such that it integrated well with Drake example frameworks turned out to be a large challenge. At times we did believe the optimization problem to be well-formed, we would also simply get confusing error messages with no recourse in how to proceed. 
+We faced many challenges in fully encorperating optimization with our solution. Primarily, it was unclear how to encode obstacle constraints in Drake optimizers that reflected the simulated pybullet world. We decided to choose a trajectory where obstacles did not play a role. Additionally, properly bringing the URDF information forthe Franka arm into Drake such that it integrated well with Drake example frameworks turned out to be a huge challenge. At times we did find some success and believe the optimization problem to be well-formed, we would repeatedly get confusing error messages with no recourse in how to proceed. We observed that the problems faced were mostly in implementation and not conceptual. In the end, our efforts did not produce many results for the pybullet simulation. Our best approach to applying trajectory optimization, ultimately, was by adapting a Drake tutorial program to fit our needs. Due to better drake documentation / library support for the iiwa manipulator arm, our optimization demo unfortunately uses this arm rather than the Franka. However, we chose optimization constraints that closely matched the Franka trajectory, and as both arms have seven joints and similar geometries, we feel that this process was still useful and relevant to the learning goals of this project! Through this approach we were able to successfully apply our constraints and obtain & visualize an optimization solution.
 
 **5. GIF/video of the robot executing the plan and embedded in the README**
-The trajectory we chose to focus on was the `pick_up` `spam` trajectory. This trajectory was obstacle free, so the optimization did need to apply collision constraints. The first trajectory in the video is the output of RRT, and the second trajectory was the 'optimized' version. For the purposes of creating this video and due to difficulty integrating Drake's trajectory optimization with our solution, this demononstration shows an 'ideally optimized' trajectory that simply goes point-to-point. See `optimization_comparison.py` to recreate this visualization. 
+The trajectory we chose to focus on was the `pick_up` `spam` trajectory. This trajectory was obstacle free, so the optimization did need to apply collision constraints. The first trajectory in the video is the output of RRT, and the second trajectory was the 'optimized' version. For the purposes of creating this video and due to difficulty integrating Drake's trajectory optimization with our solution, this demononstration shows an 'ideally optimized' trajectory that simply goes point-to-point. This is what we would expect an ideally optimized trajectory to look like. See `optimization_comparison.py` to recreate this visualization. 
 - https://youtu.be/R-Y3VyakcYU
 
 **6. Compare the resulting optimized trajectory to the initial sample-based motion plan**
-
+As expected, the optimized trajectory is much closer to optimal than the RRT solution in terms of minimizing distance travelled and total time. The RRT trajectory will move the arm in random directions at times and generally appear unnatural. The optimized solution is consistent and, in the case of no obstacles as chosen here, travels point-to-point along the shortest path. 
 
 ## Conclusion
+In conclusion, we achieved the major goal of this project by programming an autonomous kitchen-cleaning task. First, we formulated the problem in terms of states and actions, and created a breadth-first search solver to generate an activity plan. Next, we developed action definitions for a simulated robot and implemented a sample-based motion planner, RRT in this case, to allow our robot to navigate and manipulate its envirnment. Finally, we reflected on our approach and explored improvements to our sample-based planner through optimization methods. In addition to applying concepts from this course, we gained experience in useful autonomous systems-related libraries for which we had no prior experience (PDDL, pybullet, Drake).
 
 ### Reflections
+We feel this was a useful project to apply the concepts taught in Principles of Autonomy and Decision Making. It is one thing to discuss theory, and another to put it in action and understand the results. We are very greatful for the work of TAs Viraj and Alisha for making this project possible, and their generous support along the way.  
 
 ### Contributions
+We worked collaboratively on this project, but William was primarily responsible for the activity planner and Pascal for the trajectory planning and simulation.
