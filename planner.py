@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from .PDDL import PDDL_Parser
+from PDDL import PDDL_Parser
 import sys
 
 class Node:
@@ -97,7 +97,7 @@ class Planner:
                                 plan.insert(0, new_node.action)
                                 new_node = new_node.parent
                             # Assign plan to plan instance variable 
-                            self.plan = [action.name + " " + " ".join(action.parameters) for action in plan] 
+                            self.plan = [(action.name + " " + " ".join(action.parameters)).strip() for action in plan] 
                             return plan
                         # Add new nodes to visited list and queue
                         visited.add(new_node)
@@ -130,3 +130,4 @@ if __name__ == "__main__":
 
     print("\n[+] As a list:")
     print(planner.plan)
+    
