@@ -150,7 +150,7 @@ For this optimization problem, we would like to minimize the total trajectory ti
 - the initial joint speeds in the trajectory are all zero,
 - the final joint speeds in the trajectory are all zero,
 - some specified maximum joint speed for each joint is not exceeded at any time (as there are maximum motor speeds on real robot hardware, and without this constraint the time-minimization will result in an infinitely fast trajectory).
-- 
+
 We chose to minimize trajectory time rather than distance-covered as this first metric is easier to encode and produces the same goal behaviour: the manipulator arm moving to the desired position as directly as possible. Let $q(t)$ be a function to represent configuration-space trajectory that returns a configuration $q(t_{N}) \in \mathbb{R}^{7 \times 1}$ given a time $t_N$. Furthermore, let $q(t)$ take the form of a polynomal function with coefficients $\alpha = \alpha_{0}, \alpha_{1}, ... \alpha_{N}$. Let $D$ denote the time duration of executing the trajectory $q(t)$. Let $C_{s}$ be the start configuration, $C_{g}$ be the goal configuration, $S(q(N))$ be a the signed distance function that returns the distance between the robot in configuration $q(N)$ and the nearest obstacle, and $w_{max}$ be the maximum absolute rotation speeds of each of the seven robot joints. Then, the optimization problem could be written as:
 
 $\min_{\alpha, D}$ $D$ such that $q(0) = C_{s}$, $q(D) = C_{g}$, $\dot{q}(0) = 0$, $\dot{q}(D) = 0$, $\forall t$ ${S(q(t))} \gt 0$, $\forall t$ $|\dot{q}(t)| \leq w_{max}$
